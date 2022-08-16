@@ -15,6 +15,7 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: ${{ github.workspace }} # set this to the path to your web app project
   JAVA_VERSION: '8'                # set this to the Java version to use
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}     # set GH repo secret with the publish profile of the web app
+  DISTRIBUTION: zulu
 
 jobs:
   build-and-deploy:
@@ -27,6 +28,8 @@ jobs:
       uses: actions/setup-java@v3.0.0
       with:
         java-version: ${{ env.JAVA_VERSION }}
+        distribution: ${{ env.DISTRIBUTION }}
+        cache: 'maven'
     - name: Build with Maven
       run: mvn package --file pom.xml
     - name: 'Deploy to Azure WebApp'
